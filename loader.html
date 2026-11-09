@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MicroQR Pages</title>
+</head>
+<body>
+    <script>
+        // Pega tudo o que está depois do '#' na URL
+        const hashData = window.location.hash.substring(1);
+        
+        if (hashData) {
+            try {
+                // Decodifica o Base64 para o HTML original do mini-site
+                const decodedHtml = decodeURIComponent(atob(hashData).split('').map(function(c) {
+                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+                }).join(''));
+                
+                // Injeta o HTML decodificado na página instantaneamente
+                document.open();
+                document.write(decodedHtml);
+                document.close();
+            } catch (e) {
+                document.body.innerHTML = "<h2 style='text-align:center;color:red;font-family:sans-serif;margin-top:50px;'>Erro ao carregar o mini-site. O código está corrompido.</h2>";
+            }
+        } else {
+            document.body.innerHTML = "<h2 style='text-align:center;font-family:sans-serif;margin-top:50px;'>Nenhum conteúdo encontrado neste QR Code.</h2>";
+        }
+    </script>
+</body>
+</html>
